@@ -28,9 +28,10 @@ public class Libretto {
 	 * oggetti contenuti.
 	 * @param lib
 	 */
-	// Non dovendo modificare gli oggetti voto, ma ordinarli e basta, è sufficente un copy 
-	// constructor "Shallow"
-	// Esegue una copia dell'oggetto corrente, gli oggetti Voto sono condivisi tra i due libretti
+	// Non dovendo modificare gli oggetti voto, ma ordinarli e basta, 
+	// è sufficente un copy constructor "Shallow".
+	// Esegue una copia dell'oggetto corrente, gli oggetti Voto sono 
+	// condivisi tra i due libretti.
 	public Libretto(Libretto lib) {
 		this.voti.addAll(lib.voti);
 	}
@@ -43,35 +44,44 @@ public class Libretto {
 	 * @return {@code true} se ha inserito il voto, {@code false} se non l'ha inserito
 	 * perché era in conflitto oppure era duplicato.
 	 */
-	public boolean add(Voto v) { // usare sempre oggetti e mai singoli dati sparsi
+	// Usare sempre oggetti e mai singoli dati sparsi
+	public boolean add(Voto v) {
 		if(this.isDuplicato(v) == true || this.isConflitto(v) == true) {
-			return false; // non inserire il voto
+			// Non inserire il voto
+			return false; 
 		} else {
-			this.voti.add(v);	// di fatto è un operazione di delega ad Collection.add()
-								// inserisce il voto
-								// voti.add(v) è analogo, con this. diventa esplicito
+			// Di fatto è un operazione di delega ad Collection.add()
+			// inserisce il voto
+			// voti.add(v) è analogo, con this. diventa esplicito
+			this.voti.add(v);
 			return true;
 		}
 	}
 	
+	// public void add(String corso, int voto, LocalDate data) { }
+	
 	public String toString() {
-		String s="";
+		// La stringa che verrà stampata
+		String s = "";
 		for(Voto v : this.voti) {
-			s += v.toString()+"\n";
+			s = s + v.toString() + "\n";
 		}
 		return s;
 	}
+	
 	/**
 	 * Dato un Libretto, restituisce una stringa nella quale 
 	 * vi sono solamente i voti pari al valore specificato
-	 * @param voto
-	 * @return
+	 * @param voto valore specificato
+	 * @return stringa formattata per visualizzare il
 	 */
 	public String stampaVotiUguali(int voto) {
+		// Stampa selettiva
+		// 2. Stampare i voti uguali a quello passato come parametro
 		String s = "";
 		for(Voto v : this.voti) {
 			if(v.getVoto() == voto) {
-				s += v.toString()+"\n";
+				s = s + v.toString() + "\n";
 			}
 		}
 		return s;
@@ -83,14 +93,14 @@ public class Libretto {
 	 * @param voto votazione specificata
 	 * @return nuovo Libretto "ridotto"
 	 */
-	public Libretto estraiVotiUguali(int voto) { //stampa selettiva
-		Libretto nuovo = new Libretto();
+	public Libretto estraiVotiUguali(int voto) {
+		Libretto nuovoLibretto = new Libretto();
 		for(Voto v: this.voti) {
 			if(v.getVoto() == voto) {
-				nuovo.add(v);
+				nuovoLibretto.add(v);
 			}
 		}
-		return nuovo;
+		return nuovoLibretto;
 	}
 	
 	/**
@@ -160,23 +170,29 @@ public class Libretto {
 	public Libretto creaLibrettoMigliorato() {
 		Libretto nuovo = new Libretto();
 		for(Voto v : this.voti) {
-			//Voto v2 = v; // Non va bene, in quanto questa operazione non crea un'oggetto nuovo, 
-						   // ma crea un riferimento all'oggetto già creato del primo ArrayList
+			//Voto v2 = v;
+			// Non va bene, in quanto questa operazione non crea 
+			// un nuovo oggetto Voto, ma crea un riferimento all'oggetto, 
+			// ovvero un alias, quindi v2 punta all'oggetto puntato da v, 
+			// gli ArrayList condividono gli stessi oggetti.
 			// Come posso clonare l'oggetto contenuto in v (v2)? 
 			// 1. METODO : definire un copy constructor
 			// 2. METODO : utilizzo (implementandolo) il metodo clone
 			// Voto v2 = new Voto(v);
 			// Voto v2 = v.clone();
 			
-			//Voto v3 = new Voto(v.getCorso(), v.getVoto(), v.getData()); NON CI PIACE, in quanto l'oggetto di tipo Voto
-			//perderebbe la sua genericità.
+			//Voto v3 = new Voto(v.getCorso(), v.getVoto(), v.getData()); 
+			// NON CI PIACE, in quanto l'oggetto di tipo Voto
+			// perderebbe la sua genericità.
 			
+			// Il metodo clone() di Voto va ridefinito in Voto()
 			Voto v2 = v.clone();
 			
 			if(v2.getVoto() >= 24) {
 				v2.setVoto(v2.getVoto()+2);
-				if(v2.getVoto()>30)
+				if(v2.getVoto()>30) {
 					v2.setVoto(30);
+				}
 			} else if(v2.getVoto() >= 18) {
 				v2.setVoto(v2.getVoto()+1);
 			}
@@ -189,25 +205,33 @@ public class Libretto {
 	 * Riordina i voti presenti nel libretto corrente 
 	 * alfabeticamente per corso
 	 */
-	// Posso ordinare secondo il criterio più naturale oppure con dei parametri di ordinamento più articolati.
+	// Posso ordinare secondo il criterio più naturale oppure 
+	// con dei parametri di ordinamento più articolati.
 	public void ordinaPerCorso() {
-		Collections.sort(this.voti); // Introdotta da Java 8
+		// Introdotta da Java 8
+		// Questa implemetazione utilizza l'ordinamento naturale degli 
+		// oggetti Voto come definito nella medesima classe dal metodo 
+		// compareTo().
+		Collections.sort(this.voti);
 	}
 	
-	// PER VERIFICARE L'UGUAGLIANZA TRA DUE OGGETTI bisogna preferenzialmente utilizzare equals 
-	// 
+	// PER VERIFICARE L'UGUAGLIANZA TRA DUE OGGETTI 
+	// bisogna preferenzialmente utilizzare equals
 	
 	public void ordinaPerVoto() {
-		// NOTA : ConfrontaVotiPerValutazione() è una classe, quindi deve essere 
-		// istanziata con new per essere utilizzata come oggetto.
-		Collections.sort(this.voti, new ConfrontaVotiPerValutazione()); // Si utilizza un Comparator
+		// NOTA : ConfrontaVotiPerValutazione() è una classe, 
+		// quindi deve essere istanziata con new per essere 
+		// utilizzata come oggetto.
+		// Si utilizza un Comparator
+		Collections.sort(this.voti, new ConfrontaVotiPerValutazione());
+		// this.voti.sort(new ConfrontaVotiPerValutazione());
 	}
 	
 	/**
 	 * Elimina dal libretto tutti i voti <24
 	 */
 	
-	// PERCHE' VIENE MOSTRATO ConcurrentModificationException??
+	// PERCHE' VIENE MOSTRATO ConcurrentModificationException ?
 	// Se tento di modificare una lista nel mentre sto iterando 
 	// sulla lista genero un'accesso concorrente
 	public void cancellaVotiScarsi() {

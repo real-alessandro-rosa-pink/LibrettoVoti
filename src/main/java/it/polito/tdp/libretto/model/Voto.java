@@ -1,7 +1,10 @@
 package it.polito.tdp.libretto.model;
 
-// import java.util.Date; // "La libreria ha un milione di problemi" cit. Fulvio Corno
-import java.time.LocalDate;; // Introdotto dalla vesione Java 7.0
+// import java.util.Date;
+// "La libreria ha un milione di problemi" cit. Fulvio Corno
+// Introdotto dalla vesione Java 7.0
+import java.time.LocalDate;
+
 
 /**
  * Classe Voto, contiene le informazioni su un esame superato.
@@ -36,13 +39,17 @@ public class Voto implements Comparable<Voto> {
 	/**
 	 * Copy constructor di {@link Voto}: crea un nuovo {@link Voto}, 
 	 * il contenuto del parametro {@code v}
-	 * @return v il voto da copiare
+	 * @param v il voto da copiare
 	 */
 	public Voto(Voto v) {
-		this.corso = new String(v.corso); // v.getCorso(), sto condividendo il riferimento, Immutabile
-		// Utilizzando new String(v.corso) sto creando una nuova stringa, quindi non con
-		this.data = v.data; // Il problema della copia non si pone, in quando le stringhe in Java non sono modificabili.
-		this.voto = v.voto; // E' un tipo primitivo, quindi viene sempre copiato il valore
+		// v.getCorso(), sto condividendo il riferimento, immutabile.
+		// Utilizzando new String(v.corso) sto creando una nuova stringa, 
+		// quindi il problema della copia non si pone, 
+		// in quando le stringhe in Java non sono modificabili.
+		this.corso = new String(v.corso);
+		this.data = v.data;
+		// E' un tipo primitivo, quindi viene sempre copiato il valore.
+		this.voto = v.voto;
 	}
 	
 	public String getCorso() {
@@ -71,7 +78,7 @@ public class Voto implements Comparable<Voto> {
 
 	@Override
 	public String toString() {
-		return corso+": "+voto+" "+data;
+		return corso + ": " + voto + " " + data;
 	}
 
 	@Override
@@ -119,6 +126,7 @@ public class Voto implements Comparable<Voto> {
 		 */
 		// Delego il confronto tra gli oggetti voto a gli oggetti di tipo stringa
 		return this.getCorso().compareTo(other.getCorso());
+		
 	}
 
 }

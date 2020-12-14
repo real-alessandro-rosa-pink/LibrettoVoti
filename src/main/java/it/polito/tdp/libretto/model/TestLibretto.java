@@ -65,9 +65,9 @@ public class TestLibretto {
 	}
 	
 	public static void main(String[] args) {
-		//static : posso richiamare solamente altri metodi static di altre classi
-		//non si lavora all'interno del main, si crea un'oggetto e si lavora all'interno di
-		//esso
+		// static : posso richiamare solamente altri metodi static 
+		// di altre classi non si lavora all'interno del main, si 
+		// crea un'oggetto e si lavora all'interno di esso
 		TestLibretto test = new TestLibretto();
 		test.run();
 	}
